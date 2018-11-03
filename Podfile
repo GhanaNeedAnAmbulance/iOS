@@ -8,6 +8,7 @@ target 'Ghananeedanambulance' do
   # Pods for Ghananeedanambulance
 
 	pod 'Firebase/Core'
+	pod 'Firebase/Database'
 
   target 'GhananeedanambulanceTests' do
     inherit! :search_paths
