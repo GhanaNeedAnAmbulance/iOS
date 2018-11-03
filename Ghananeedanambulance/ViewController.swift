@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  Ghananeedanambulance
 //
-//  Created by NiiDjan Lamptey on 02/11/2018.
+//  Created by Jonathan Lamptey & Cole Pickford on 02/11/2018.
 //  Copyright © 2018 Ghananeedanambulance. All rights reserved.
 //
 
