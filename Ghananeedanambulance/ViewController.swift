@@ -107,15 +107,28 @@ class ViewController: UIViewController {
         marker.map = mapView
 }
 
+    //we have to make this general so that it can take different coordinates
 func FindDirection(){
     if (UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)) {
         UIApplication.shared.open(URL(string:"https://www.google.de/maps/dir/41.7030,-86.2387/41.6984,-86.2161/&travelmode=driving")!, options: [:], completionHandler: nil)
-        
     } else {
         print("Can't use comgooglemaps://");
     }
 }
     
+
+    /*
+    //function to calculate the best hospital to go to
+    func CalcBestHospital(List: [DataModel]) -> (CLLocationDegrees,CLLocationDegrees){
+        //temporary
+        var final_long:CLLocationDegrees = 0
+        var final_lat:CLLocationDegrees = 0
+        
+        
+        return (final_long,final_lat)
+    }
+ */
+
 
 }
 
