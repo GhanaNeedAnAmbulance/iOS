@@ -11,23 +11,6 @@ import GoogleMaps
 import Foundation
 import FirebaseDatabase
 
-//setting up data structure for json
-class DataModel{
-    var emptyBeds: Int?
-    var hospitalName: String?
-    var iD: Int?
-    var lat: Float?
-    var long: Float?
-    
-    init(emptyBeds: Int?,hospitalName: String?,iD: Int?,lat: Float?,long: Float?){
-        self.emptyBeds = emptyBeds
-        self.hospitalName = hospitalName
-        self.iD = iD
-        self.lat = lat
-        self.long = long
-    }
-}
-
 class ViewController: UIViewController {
     //for location
     private let locationManager = CLLocationManager()
@@ -44,7 +27,64 @@ class ViewController: UIViewController {
         //
         //testing for hosptial 1 name
         ReadDB()
+        FindDirection()
         //
+    }
+    //read data from database with sample data
+    func ReadDB(){
+        databaseRef = Database.database().reference().child("Hospital")
+        //observing the data changes
+        databaseRef.observe(DataEventType.value, with: { (snapshot) in
+            print(snapshot)
+            //if the reference have some values
+            if snapshot.childrenCount > 0 {
+                for values in snapshot.children.allObjects as! [DataSnapshot] {
+                    let ValueObjects = values.value as? [String:AnyObject]
+                    let lat = ValueObjects?["lat"]
+                    let long = ValueObjects?["lng"]
+                    let name = ValueObjects?["hospitalName"]
+                    let emptybeds = ValueObjects?["emptyBeds"]
+                    let iD = ValueObjects?["id"]
+                    
+                    let list = DataModel(emptyBeds: emptybeds as? Int, hospitalName: name as? String, iD: iD as? Int, lat: lat as? Float, long: long as? Float)
+                    
+                    self.DBvalueList.append(list)
+                }
+                print(self.DBvalueList)
+            }
+        })
+    }
+    
+    func checkGoogleMaps(){
+        //checks if Google maps is installed
+        if(UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)){
+            print("Google Maps installed")
+            return
+        }
+        else{
+            //runs in main thread
+            DispatchQueue.main.async{
+                //create an alert
+                let alert = UIAlertController(title: "There is no Google Maps installed on your phone", message: "There is no Google Maps installed on your phone. Install Google Maps to have the best experience using this app", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Download", style: UIAlertAction.Style.default, handler: { (action) in
+                    //opens google maps in ios store
+                    UIApplication.shared.open(URL(string:"https://itunes.apple.com/gb/app/google-maps-transit-food/id585027354?mt=8")!, options: [:], completionHandler: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "Close", style: UIAlertAction.Style.default, handler: { (action) in
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                self.present(alert,animated: true,completion: nil)
+            }
+        }
+    }
+    
+    //get the location and put it in an "array"
+    func GetLocation() -> (CLLocationDegrees,CLLocationDegrees){
+        locationManager.startUpdatingLocation()
+        let latitude = locationManager.location?.coordinate.latitude
+        let longitude = locationManager.location?.coordinate.longitude
+        locationManager.stopUpdatingLocation()
+        return (latitude!,longitude!)
     }
     
     //Loads Mapview and places pointer on current location
@@ -65,76 +105,9 @@ class ViewController: UIViewController {
         marker.title = "Your Location"
         marker.snippet = "\(location.0),\(location.1)"
         marker.map = mapView
-        
-<<<<<<< HEAD
-
-=======
-        //
-        FindDirection()
-        //
->>>>>>> 58a02817c5fd732352a503706932775cd1430911
-    }
-//
-    func checkGoogleMaps(){
-        //checks if Google maps is installed
-        if(UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)){
-            print("Google Maps installed")
-         return
-        }
-        else{
-         //runs in main thread
-         DispatchQueue.main.async{
-            //create an alert
-            let alert = UIAlertController(title: "There is no Google Maps installed on your phone", message: "There is no Google Maps installed on your phone. Install Google Maps to have the best experience using this app", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "Download", style: UIAlertAction.Style.default, handler: { (action) in
-                //opens google maps in ios store
-                UIApplication.shared.open(URL(string:"https://itunes.apple.com/gb/app/google-maps-transit-food/id585027354?mt=8")!, options: [:], completionHandler: nil)
-            }))
-            alert.addAction(UIAlertAction(title: "Close", style: UIAlertAction.Style.default, handler: { (action) in
-                alert.dismiss(animated: true, completion: nil)
-            }))
-            self.present(alert,animated: true,completion: nil)
-         }
-        }
-    }
-    //get the location and put it in an "array"
-    func GetLocation() -> (CLLocationDegrees,CLLocationDegrees){
-        locationManager.startUpdatingLocation()
-        let latitude = locationManager.location?.coordinate.latitude
-        let longitude = locationManager.location?.coordinate.longitude
-        locationManager.stopUpdatingLocation()
-        return (latitude!,longitude!)
-    }
-    
-    //read data from database with sample data
-    func ReadDB(){
-         databaseRef = Database.database().reference().child("Hospital")
-        //observing the data changes
-        databaseRef.observe(DataEventType.value, with: { (snapshot) in
-            print(snapshot)
-            //if the reference have some values
-            if snapshot.childrenCount > 0 {
-                for values in snapshot.children.allObjects as! [DataSnapshot] {
-                    let ValueObjects = values.value as? [String:AnyObject]
-                    let lat = ValueObjects?["lat"]
-                    let long = ValueObjects?["lng"]
-                    let name = ValueObjects?["hospitalName"]
-                    let emptybeds = ValueObjects?["emptyBeds"]
-                    let iD = ValueObjects?["id"]
-                    
-                    let list = DataModel(emptyBeds: emptybeds as? Int, hospitalName: name as? String, iD: iD as? Int, lat: lat as? Float, long: long as? Float)
-                    
-                    self.DBvalueList.append(list)
-            }
-                print(self.DBvalueList)
-           }
-        })
-    }
 }
 
 func FindDirection(){
-    //UIApplication.shared.openURL(URL(string:"https://www.google.com/maps/@42.585444,13.007813,6z")!)
-    //UIApplication.shared.open(URL(string:"https://www.google.com/maps/@41.7030,-86.2387,18z")!, options: [:], completionHandler: nil)
     if (UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)) {
         UIApplication.shared.open(URL(string:"https://www.google.de/maps/dir/41.7030,-86.2387/41.6984,-86.2161/&travelmode=driving")!, options: [:], completionHandler: nil)
         
@@ -143,3 +116,21 @@ func FindDirection(){
     }
 }
 
+}
+
+//setting up data structure for json
+class DataModel{
+    var emptyBeds: Int?
+    var hospitalName: String?
+    var iD: Int?
+    var lat: Float?
+    var long: Float?
+    
+    init(emptyBeds: Int?,hospitalName: String?,iD: Int?,lat: Float?,long: Float?){
+        self.emptyBeds = emptyBeds
+        self.hospitalName = hospitalName
+        self.iD = iD
+        self.lat = lat
+        self.long = long
+    }
+}
