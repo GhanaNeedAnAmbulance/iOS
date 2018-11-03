@@ -120,8 +120,9 @@ class ViewController: UIViewController {
     //we have to make this general so that it can take different coordinates
     func FindDirection(lat: CLLocationDegrees, Long: CLLocationDegrees){
         let InitialLocation = GetLocation()
+        
     if (UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)) {
-        UIApplication.shared.open(URL(string:"https://www.google.de/maps/dir/41.7030,-86.2387/41.6984,-86.2161/&travelmode=driving")!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string:"https://www.google.de/maps/dir/\(InitialLocation.0),\(InitialLocation.1)/\(lat),\(Long)/&travelmode=driving")!, options: [:], completionHandler: nil)
     } else {
         print("Can't use comgooglemaps://");
     }
