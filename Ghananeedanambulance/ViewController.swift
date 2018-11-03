@@ -11,9 +11,25 @@ import GoogleMaps
 import Foundation
 import FirebaseDatabase
 
-class ViewController: UIViewController {
 
+//setting up data structure for json
+class DataModel{
+    var emptyBeds: Int?
+    var hospitalName: String?
+    var iD: Int?
+    var lat: Float?
+    var long: Float?
     
+    init(emptyBeds: Int?,hospitalName: String?,iD: Int?,lat: Float?,long: Float?){
+        self.emptyBeds = emptyBeds
+        self.hospitalName = hospitalName
+        self.iD = iD
+        self.lat = lat
+        self.long = long
+    }
+}
+
+class ViewController: UIViewController {
     //for location
     private let locationManager = CLLocationManager()
     //for firebase
@@ -26,30 +42,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         locationManager.delegate = self as? CLLocationManagerDelegate
         locationManager.requestWhenInUseAuthorization()
-    }
-    //read data from database with sample data
-    func ReadDB(){
-        databaseRef = Database.database().reference().child("Hospital")
-        //observing the data changes
-        databaseRef.observe(DataEventType.value, with: { (snapshot) in
-            print(snapshot)
-            //if the reference have some values
-            if snapshot.childrenCount > 0 {
-                for values in snapshot.children.allObjects as! [DataSnapshot] {
-                    let ValueObjects = values.value as? [String:AnyObject]
-                    let lat = ValueObjects?["lat"]
-                    let long = ValueObjects?["lng"]
-                    let name = ValueObjects?["hospitalName"]
-                    let emptybeds = ValueObjects?["emptyBeds"]
-                    let iD = ValueObjects?["id"]
-                    
-                    let list = DataModel(emptyBeds: emptybeds as? Int, hospitalName: name as? String, iD: iD as? Int, lat: lat as? Float, long: long as? Float)
-                    
-                    self.DBList.append(list)
-                }
-                print(self.DBList)
-            }
-        })
     }
     
     func checkGoogleMaps(){
@@ -118,6 +110,32 @@ class ViewController: UIViewController {
         FindDirection(lat: location.1, Long: location.2)
         //
 }
+    //read data from database with sample data
+    func ReadDB(){
+        print("reading DB")
+        databaseRef = Database.database().reference().child("Hospital")
+        //observing the data changes
+        databaseRef.observe(DataEventType.value, with: { (snapshot) in
+            print(snapshot)
+            //if the reference have some values
+            if snapshot.childrenCount > 0 {
+                for values in snapshot.children.allObjects as! [DataSnapshot] {
+                    let ValueObjects = values.value as? [String:AnyObject]
+                    let lat = ValueObjects?["lat"]
+                    let long = ValueObjects?["lng"]
+                    let name = ValueObjects?["hospitalName"]
+                    let emptybeds = ValueObjects?["emptyBeds"]
+                    let iD = ValueObjects?["id"]
+                    
+                    let list = DataModel(emptyBeds: emptybeds as? Int, hospitalName: name as? String, iD: iD as? Int, lat: lat as? Float, long: long as? Float)
+                    
+                    self.DBList.append(list)
+                }
+                print(self.DBList)
+            }
+        })
+    }
+    
 
     //we have to make this general so that it can take different coordinates
     func FindDirection(lat: CLLocationDegrees, Long: CLLocationDegrees){
@@ -135,7 +153,7 @@ class ViewController: UIViewController {
     //function to calculate the best hospital to go to
     // returns name, lat, long
     func CalcBestHospital(value:[Int],lat: [Float], long: [Float],name:[String], noEmptyBeds: [Int]) -> (String,CLLocationDegrees,CLLocationDegrees){
-        var indexnum : Int = -1
+        var indexnum = 0
         var smallest : Int
         smallest = value[0]
         for (index,element) in noEmptyBeds.enumerated(){
@@ -149,6 +167,7 @@ class ViewController: UIViewController {
             
     }
     }
+        print(indexnum)
         return (name[indexnum], CLLocationDegrees(lat[indexnum]), CLLocationDegrees(long[indexnum]))
     }
 
@@ -225,19 +244,4 @@ class ViewController: UIViewController {
     
 }
 
-//setting up data structure for json
-class DataModel{
-    var emptyBeds: Int?
-    var hospitalName: String?
-    var iD: Int?
-    var lat: Float?
-    var long: Float?
-    
-    init(emptyBeds: Int?,hospitalName: String?,iD: Int?,lat: Float?,long: Float?){
-        self.emptyBeds = emptyBeds
-        self.hospitalName = hospitalName
-        self.iD = iD
-        self.lat = lat
-        self.long = long
-    }
-}
+
