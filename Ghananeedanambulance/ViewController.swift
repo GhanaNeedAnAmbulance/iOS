@@ -10,17 +10,41 @@ import UIKit
 import GoogleMaps
 import Foundation
 import FirebaseDatabase
+
+//setting up data structure for json
+class DataModel{
+    var emptyBeds: Int?
+    var hospitalName: String?
+    var iD: Int?
+    var lat: Float?
+    var long: Float?
+    
+    init(emptyBeds: Int?,hospitalName: String?,iD: Int?,lat: Float?,long: Float?){
+        self.emptyBeds = emptyBeds
+        self.hospitalName = hospitalName
+        self.iD = iD
+        self.lat = lat
+        self.long = long
+    }
+}
+
 class ViewController: UIViewController {
     //for location
     private let locationManager = CLLocationManager()
     //for firebase
     var databaseRef : DatabaseReference!
     var databasehandle : DatabaseHandle!
+    //to store values of json in custom array
+    var DBvalueList = [DataModel]()
     //
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self as? CLLocationManagerDelegate
         locationManager.requestWhenInUseAuthorization()
+        //
+        //testing for hosptial 1 name
+        ReadDB()
+        //
     }
     
     //Loads Mapview and places pointer on current location
@@ -31,7 +55,7 @@ class ViewController: UIViewController {
         print("The Initial Latitude is \(location.0) and the Longitude \(location.1)")
         // Create a GMSCameraPosition that tells the map to display the
         // coordinate -33.86,151.20 at zoom level 6.
-        let camera = GMSCameraPosition.camera(withLatitude: location.0, longitude: location.1, zoom: 8.0)
+        let camera = GMSCameraPosition.camera(withLatitude: location.0, longitude: location.1, zoom: 14.0)
         let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         view = mapView
         
@@ -41,6 +65,8 @@ class ViewController: UIViewController {
         marker.title = "Your Location"
         marker.snippet = "\(location.0),\(location.1)"
         marker.map = mapView
+        
+
     }
 //
     func checkGoogleMaps(){
@@ -73,9 +99,30 @@ class ViewController: UIViewController {
         locationManager.stopUpdatingLocation()
         return (latitude!,longitude!)
     }
-    //read data from database
+    
+    //read data from database with sample data
     func ReadDB(){
-        
+         databaseRef = Database.database().reference().child("Hospital")
+        //observing the data changes
+        databaseRef.observe(DataEventType.value, with: { (snapshot) in
+            print(snapshot)
+            //if the reference have some values
+            if snapshot.childrenCount > 0 {
+                for values in snapshot.children.allObjects as! [DataSnapshot] {
+                    let ValueObjects = values.value as? [String:AnyObject]
+                    let lat = ValueObjects?["lat"]
+                    let long = ValueObjects?["lng"]
+                    let name = ValueObjects?["hospitalName"]
+                    let emptybeds = ValueObjects?["emptyBeds"]
+                    let iD = ValueObjects?["id"]
+                    
+                    let list = DataModel(emptyBeds: emptybeds as? Int, hospitalName: name as? String, iD: iD as? Int, lat: lat as? Float, long: long as? Float)
+                    
+                    self.DBvalueList.append(list)
+            }
+                print(self.DBvalueList)
+           }
+        })
     }
 }
 
