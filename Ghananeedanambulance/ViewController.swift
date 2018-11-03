@@ -66,7 +66,13 @@ class ViewController: UIViewController {
         marker.snippet = "\(location.0),\(location.1)"
         marker.map = mapView
         
+<<<<<<< HEAD
 
+=======
+        //
+        FindDirection()
+        //
+>>>>>>> 58a02817c5fd732352a503706932775cd1430911
     }
 //
     func checkGoogleMaps(){
@@ -123,6 +129,17 @@ class ViewController: UIViewController {
                 print(self.DBvalueList)
            }
         })
+    }
+}
+
+func FindDirection(){
+    //UIApplication.shared.openURL(URL(string:"https://www.google.com/maps/@42.585444,13.007813,6z")!)
+    //UIApplication.shared.open(URL(string:"https://www.google.com/maps/@41.7030,-86.2387,18z")!, options: [:], completionHandler: nil)
+    if (UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)) {
+        UIApplication.shared.open(URL(string:"https://www.google.de/maps/dir/41.7030,-86.2387/41.6984,-86.2161/&travelmode=driving")!, options: [:], completionHandler: nil)
+        
+    } else {
+        print("Can't use comgooglemaps://");
     }
 }
 
