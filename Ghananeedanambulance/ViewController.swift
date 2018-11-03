@@ -115,6 +115,7 @@ func FindDirection(){
         print("Can't use comgooglemaps://");
     }
 }
+    
 
 }
 
