@@ -15,25 +15,32 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         locationManager.delegate = self as? CLLocationManagerDelegate
         locationManager.requestWhenInUseAuthorization()
-
+        /*
+        locationManager.startUpdatingLocation()
+        let latitude = locationManager.location?.coordinate.latitude
+        let longitude = locationManager.location?.coordinate.longitude
+        print("The Initial Latitude is \(latitude!) and the Longitude \(longitude!)")
+ */
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    //this is just a test
+    //Loads Mapview and places pointer on current location
     override func loadView() {
         print("Loading View")
         checkGoogleMaps()
+        let location = GetLocation()
+        print("The Initial Latitude is \(location.0) and the Longitude \(location.1)")
         // Create a GMSCameraPosition that tells the map to display the
         // coordinate -33.86,151.20 at zoom level 6.
-        let camera = GMSCameraPosition.camera(withLatitude: 48.68316, longitude: -86.25055, zoom: 6.0)
+        let camera = GMSCameraPosition.camera(withLatitude: location.0, longitude: location.1, zoom: 6.0)
         let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         view = mapView
         
         // Creates a marker in the center of the map.
         let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: 48.68316, longitude: -86.25055)
-        marker.title = "Test"
-        marker.snippet = "Test Address"
+        marker.position = CLLocationCoordinate2D(latitude: location.0, longitude: location.1)
+        marker.title = "Your Location"
+        marker.snippet = "\(location.0),\(location.1)"
         marker.map = mapView
     }
 //
@@ -58,6 +65,14 @@ class ViewController: UIViewController {
             self.present(alert,animated: true,completion: nil)
          }
         }
+    }
+    //get the location and put it in an "array"
+    func GetLocation() -> (CLLocationDegrees,CLLocationDegrees){
+        locationManager.startUpdatingLocation()
+        let latitude = locationManager.location?.coordinate.latitude
+        let longitude = locationManager.location?.coordinate.longitude
+        locationManager.stopUpdatingLocation()
+        return (latitude!,longitude!)
     }
     
 }
