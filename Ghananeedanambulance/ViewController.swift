@@ -153,15 +153,15 @@ class ViewController: UIViewController {
         //get user's location
 //https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6905615%2C-73.9976592%7C&key=AIzaSyAOgwzUzZd78JcqcYThUsZV1wgISK-iSMY
         let user_location = GetLocation()
-        let destination : [CLLocationDegrees]
-        let distance : [Int] = [0]
+        var distance : [Int] = [0]
         //loop for selecting each element in the array
         for (index,element) in List.enumerated(){
             print("Item: \(index), content: \(element)")
             //element contains the custom datatype
-            let path = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=\(user_location.0),\(user_location.1)&destinations=\(element.lat)%2C\(element.long)C&key=AIzaSyAOgwzUzZd78JcqcYThUsZV1wgISK-iSMY"
+            let path = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=\(user_location.0),\(user_location.1)&destinations=\(String(describing: element.lat))%2C\(String(describing: element.long))C&key=AIzaSyAOgwzUzZd78JcqcYThUsZV1wgISK-iSMY"
             let urlString = path.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
             let url = URL(string: urlString!)
+            print("The URL is \(String(describing: url))")
             let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
                 if(error != nil){
                  print("An error occured")
@@ -170,7 +170,16 @@ class ViewController: UIViewController {
                 else{
                     if let content = data{
                         do{
-                            
+                            //to pick up data from this the Json
+                            if  let myJson = try JSONSerialization.jsonObject(with: content) as? [String:AnyObject] {
+                                 if(myJson.isEmpty){
+                                    print("Json response is empty")
+                                }
+                                 else{
+                                    distance[index] = myJson["distance"]?["value"] as? Int ?? -1
+                                    print("The distance of \(String(describing: element.hospitalName)) is \(distance[index])")
+                                }
+                            }
                         }
                         catch{
                             print(error)
