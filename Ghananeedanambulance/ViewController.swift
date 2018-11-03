@@ -8,20 +8,15 @@
 
 import UIKit
 import GoogleMaps
-
+import Foundation
+import Firebase
 class ViewController: UIViewController {
     private let locationManager = CLLocationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self as? CLLocationManagerDelegate
         locationManager.requestWhenInUseAuthorization()
-        /*
-        locationManager.startUpdatingLocation()
-        let latitude = locationManager.location?.coordinate.latitude
-        let longitude = locationManager.location?.coordinate.longitude
-        print("The Initial Latitude is \(latitude!) and the Longitude \(longitude!)")
- */
-        // Do any additional setup after loading the view, typically from a nib.
     }
     
     //Loads Mapview and places pointer on current location
@@ -32,7 +27,7 @@ class ViewController: UIViewController {
         print("The Initial Latitude is \(location.0) and the Longitude \(location.1)")
         // Create a GMSCameraPosition that tells the map to display the
         // coordinate -33.86,151.20 at zoom level 6.
-        let camera = GMSCameraPosition.camera(withLatitude: location.0, longitude: location.1, zoom: 6.0)
+        let camera = GMSCameraPosition.camera(withLatitude: location.0, longitude: location.1, zoom: 8.0)
         let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         view = mapView
         
