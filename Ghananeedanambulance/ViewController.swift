@@ -9,10 +9,14 @@
 import UIKit
 import GoogleMaps
 import Foundation
-import Firebase
+import FirebaseDatabase
 class ViewController: UIViewController {
+    //for location
     private let locationManager = CLLocationManager()
-    
+    //for firebase
+    var databaseRef : DatabaseReference!
+    var databasehandle : DatabaseHandle!
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self as? CLLocationManagerDelegate
@@ -69,6 +73,9 @@ class ViewController: UIViewController {
         locationManager.stopUpdatingLocation()
         return (latitude!,longitude!)
     }
-    
+    //read data from database
+    func ReadDB(){
+        
+    }
 }
 
