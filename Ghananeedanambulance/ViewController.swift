@@ -18,17 +18,12 @@ class ViewController: UIViewController {
     var databaseRef : DatabaseReference!
     var databasehandle : DatabaseHandle!
     //to store values of json in custom array
-    var DBvalueList = [DataModel]()
+    var DBList = [DataModel]()
     //
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self as? CLLocationManagerDelegate
         locationManager.requestWhenInUseAuthorization()
-        //
-        //testing for hosptial 1 name
-        ReadDB()
-        FindDirection()
-        //
     }
     //read data from database with sample data
     func ReadDB(){
@@ -48,9 +43,9 @@ class ViewController: UIViewController {
                     
                     let list = DataModel(emptyBeds: emptybeds as? Int, hospitalName: name as? String, iD: iD as? Int, lat: lat as? Float, long: long as? Float)
                     
-                    self.DBvalueList.append(list)
+                    self.DBList.append(list)
                 }
-                print(self.DBvalueList)
+                print(self.DBList)
             }
         })
     }
@@ -78,7 +73,7 @@ class ViewController: UIViewController {
         }
     }
     
-    //get the location and put it in an "array"
+    //gets the location of user and put it in an "array"
     func GetLocation() -> (CLLocationDegrees,CLLocationDegrees){
         locationManager.startUpdatingLocation()
         let latitude = locationManager.location?.coordinate.latitude
@@ -91,24 +86,40 @@ class ViewController: UIViewController {
     override func loadView() {
         print("Loading View")
         checkGoogleMaps()
-        let location = GetLocation()
-        print("The Initial Latitude is \(location.0) and the Longitude \(location.1)")
+        ReadDB()
+        //array of the distance values
+        //Jonathan
+        let DistanceValues = GetMapValues(List:DBList)
+        //
+        //
+        //Jonathan
+        let arrays = Breakup(DBList: DBList)
+        //
+        //Cole
+        let location = CalcBestHospital(value: DistanceValues, lat: arrays.1, long: arrays.2, name: arrays.0, noEmptyBeds: arrays.3)
+        //
+        print("The Initial Latitude is \(location.1) and the Longitude \(location.2)")
         // Create a GMSCameraPosition that tells the map to display the
         // coordinate -33.86,151.20 at zoom level 6.
-        let camera = GMSCameraPosition.camera(withLatitude: location.0, longitude: location.1, zoom: 14.0)
+        let camera = GMSCameraPosition.camera(withLatitude: location.1, longitude: location.2, zoom: 14.0)
         let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         view = mapView
         
         // Creates a marker in the center of the map.
         let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: location.0, longitude: location.1)
+        marker.position = CLLocationCoordinate2D(latitude: location.1, longitude: location.2)
         marker.title = "Your Location"
-        marker.snippet = "\(location.0),\(location.1)"
+        marker.snippet = "\(location.1),\(location.2)"
         marker.map = mapView
+        
+        //Cole
+        FindDirection(lat: location.1, Long: location.2)
+        //
 }
 
     //we have to make this general so that it can take different coordinates
-func FindDirection(){
+    func FindDirection(lat: CLLocationDegrees, Long: CLLocationDegrees){
+        let InitialLocation = GetLocation()
     if (UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)) {
         UIApplication.shared.open(URL(string:"https://www.google.de/maps/dir/41.7030,-86.2387/41.6984,-86.2161/&travelmode=driving")!, options: [:], completionHandler: nil)
     } else {
@@ -117,25 +128,34 @@ func FindDirection(){
 }
     
 
-    /*
+    
     //function to calculate the best hospital to go to
-    func CalcBestHospital(List: [DataModel]) -> (CLLocationDegrees,CLLocationDegrees){
-        //temporary
-        var final_long:CLLocationDegrees = 0
-        var final_lat:CLLocationDegrees = 0
+    // returns name, lat, long
+    func CalcBestHospital(value:[Int],lat: [CLLocationDegrees], long: [CLLocationDegrees],name:[String], noEmptyBeds: [Int]) -> (String,CLLocationDegrees,CLLocationDegrees){
         
         
-        return (final_long,final_lat)
+        
+        
     }
- */
+ 
 
-    //users current position & positions of hospital
-    func FindTime(){
-        UIApplication.shared.open(URL(string:"https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6905615%2C-73.9976592%7C&key=AIzaSyAOgwzUzZd78JcqcYThUsZV1wgISK-iSMY")!, options: [:], completionHandler: nil)
-        //https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6905615%2C-73.9976592%7C&key=AIzaSyAOgwzUzZd78JcqcYThUsZV1wgISK-iSMY
+    func GetMapValues(List: [DataModel]) -> ([Int]){
+        //get user's location
+//https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6905615%2C-73.9976592%7C&key=AIzaSyAOgwzUzZd78JcqcYThUsZV1wgISK-iSMY
+        let user_location = GetLocation()
+        let destination : [CLLocationDegrees]
+        
+
     }
-
-
+    
+    
+    
+    //returns arrays for , name, lat, long, number of empty beds,
+    func Breakup(DBList : [DataModel]) -> ([String],[CLLocationDegrees],[CLLocationDegrees],[Int]){
+        //breaks up dblist array into other arrays with specific information
+        
+    }
+    
 }
 
 //setting up data structure for json
