@@ -129,6 +129,11 @@ func FindDirection(){
     }
  */
 
+    func FindTime(){
+        UIApplication.shared.open(URL(string:"https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6905615%2C-73.9976592%7C&key=AIzaSyAOgwzUzZd78JcqcYThUsZV1wgISK-iSMY")!, options: [:], completionHandler: nil)
+        //https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6905615%2C-73.9976592%7C&key=AIzaSyAOgwzUzZd78JcqcYThUsZV1wgISK-iSMY
+    }
+
 
 }
 
