@@ -108,7 +108,7 @@ class ViewController: UIViewController {
         // Creates a marker in the center of the map.
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: location.1, longitude: location.2)
-        marker.title = "Your Location"
+        marker.title = "\(location.0)"
         marker.snippet = "\(location.1),\(location.2)"
         marker.map = mapView
         
@@ -198,7 +198,13 @@ class ViewController: UIViewController {
     //returns arrays for , name, lat, long, number of empty beds,
     func Breakup(DBList : [DataModel]) -> ([String],[CLLocationDegrees],[CLLocationDegrees],[Int]){
         //breaks up dblist array into other arrays with specific information
+        var names : [String] = []
+        var lat : [CLLocationDegrees] = []
+        var long : [CLLocationDegrees] = []
+        var NoEmptyBeds : [Int] = []
         
+        
+        return (names, lat, long, NoEmptyBeds)
     }
     
 }
