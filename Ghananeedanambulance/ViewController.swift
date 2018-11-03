@@ -12,6 +12,8 @@ import Foundation
 import FirebaseDatabase
 
 class ViewController: UIViewController {
+
+    
     //for location
     private let locationManager = CLLocationManager()
     //for firebase
@@ -132,7 +134,7 @@ class ViewController: UIViewController {
     
     //function to calculate the best hospital to go to
     // returns name, lat, long
-    func CalcBestHospital(value:[Int],lat: [CLLocationDegrees], long: [CLLocationDegrees],name:[String], noEmptyBeds: [Int]) -> (String,CLLocationDegrees,CLLocationDegrees){
+    func CalcBestHospital(value:[Int],lat: [Float], long: [Float],name:[String], noEmptyBeds: [Int]) -> (String,CLLocationDegrees,CLLocationDegrees){
         var indexnum : Int = -1
         var smallest : Int
         smallest = value[0]
@@ -147,7 +149,7 @@ class ViewController: UIViewController {
             
     }
     }
-        return (name[indexnum], lat[indexnum], long[indexnum])
+        return (name[indexnum], CLLocationDegrees(lat[indexnum]), CLLocationDegrees(long[indexnum]))
     }
 
     func GetMapValues(List: [DataModel]) -> ([Int]){
@@ -173,13 +175,21 @@ class ViewController: UIViewController {
                         do{
                             //to pick up data from this the Json
                             if  let myJson = try JSONSerialization.jsonObject(with: content) as? [String:AnyObject] {
+                                print(myJson)
                                  if(myJson.isEmpty){
                                     print("Json response is empty")
                                 }
                                  else{
-                                    distance[index] = myJson["distance"]?["value"] as? Int ?? -1
-                                    print("The distance of \(String(describing: element.hospitalName)) is \(distance[index])")
-                                }
+                                    if let rowjson = myJson["row"] as? [String:AnyObject]{
+                                        if let elementjson = rowjson["element"] as? [String:AnyObject]{
+                                            if let durationjson = elementjson["duration"] as? [String:AnyObject]{
+                                                distance[index] = (durationjson["value"] as? Int)!
+                                                print("The distance of \(String(describing: element.hospitalName)) is \(distance[index])")
+                                            }
+                                        }
+                                    }
+                                    }
+                                    
                             }
                         }
                         catch{
@@ -196,13 +206,19 @@ class ViewController: UIViewController {
     
     
     //returns arrays for , name, lat, long, number of empty beds,
-    func Breakup(DBList : [DataModel]) -> ([String],[CLLocationDegrees],[CLLocationDegrees],[Int]){
+    func Breakup(DBList : [DataModel]) -> ([String],[Float],[Float],[Int]){
         //breaks up dblist array into other arrays with specific information
         var names : [String] = []
-        var lat : [CLLocationDegrees] = []
-        var long : [CLLocationDegrees] = []
+        var lat : [Float] = []
+        var long : [Float] = []
         var NoEmptyBeds : [Int] = []
         
+        for (index,elements) in DBList.enumerated(){
+            names[index] = elements.hospitalName!
+            lat[index] = elements.lat!
+            long[index] = elements.long!
+            NoEmptyBeds[index] = elements.emptyBeds!
+        }
         
         return (names, lat, long, NoEmptyBeds)
     }
