@@ -5,8 +5,9 @@
 //  Created by NiiDjan Lamptey on 02/11/2018.
 //  Copyright © 2018 Ghananeedanambulance. All rights reserved.
 //
-
+// Key = AIzaSyDObdujDqf5oxGSTks-Q_gREens57SLPSE
 import UIKit
+import GoogleMaps
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        GMSServices.provideAPIKey("AIzaSyDObdujDqf5oxGSTks-Q_gREens57SLPSE")
         return true
     }
 
