@@ -132,12 +132,22 @@ class ViewController: UIViewController {
     //function to calculate the best hospital to go to
     // returns name, lat, long
     func CalcBestHospital(value:[Int],lat: [CLLocationDegrees], long: [CLLocationDegrees],name:[String], noEmptyBeds: [Int]) -> (String,CLLocationDegrees,CLLocationDegrees){
-        
-        
-        
-        
+        var indexnum : Int = -1
+        var smallest : Int
+        smallest = value[0]
+        for (index,element) in noEmptyBeds.enumerated(){
+            print("item: \(index) in array, element is \(element)")
+            while (element != 0)
+        {
+                if (value[index] <= smallest){
+                indexnum = index
+                    smallest = value[index]
+            }
+            
     }
- 
+    }
+        return (name[indexnum], lat[indexnum], long[indexnum])
+    }
 
     func GetMapValues(List: [DataModel]) -> ([Int]){
         //get user's location
