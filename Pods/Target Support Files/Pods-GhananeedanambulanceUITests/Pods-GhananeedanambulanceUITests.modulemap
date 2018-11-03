@@ -1,0 +1,6 @@
+framework module Pods_GhananeedanambulanceUITests {
+  umbrella header "Pods-GhananeedanambulanceUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
