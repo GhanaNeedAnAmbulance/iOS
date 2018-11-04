@@ -10,6 +10,8 @@
 		6089E014218D5E0700B68209 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6089E013218D5E0700B68209 /* GoogleService-Info.plist */; };
 		6089E015218D5E0700B68209 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6089E013218D5E0700B68209 /* GoogleService-Info.plist */; };
 		6089E016218D5E0700B68209 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6089E013218D5E0700B68209 /* GoogleService-Info.plist */; };
+		6218F4E5218EB1890018635A /* GoogleMapsCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6253AE66218D317F00373C33 /* GoogleMapsCore.framework */; };
+		6218F4FA218EB1910018635A /* Pods_Ghananeedanambulance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 794AE3E3B6D7BD197936B934 /* Pods_Ghananeedanambulance.framework */; };
 		6253AE35218D2A9C00373C33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6253AE34218D2A9C00373C33 /* AppDelegate.swift */; };
 		6253AE37218D2A9C00373C33 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6253AE36218D2A9C00373C33 /* ViewController.swift */; };
 		6253AE3A218D2A9C00373C33 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6253AE38218D2A9C00373C33 /* Main.storyboard */; };
@@ -19,7 +21,6 @@
 		6253AE55218D2A9D00373C33 /* GhananeedanambulanceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6253AE54218D2A9D00373C33 /* GhananeedanambulanceUITests.swift */; };
 		6253AE63218D314E00373C33 /* GoogleMapsBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6253AE62218D314E00373C33 /* GoogleMapsBase.framework */; };
 		6253AE65218D316F00373C33 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6253AE64218D316F00373C33 /* GoogleMaps.framework */; };
-		6253AE67218D317F00373C33 /* GoogleMapsCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6253AE66218D317F00373C33 /* GoogleMapsCore.framework */; };
 		6253AE6B218D31FA00373C33 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6253AE6A218D31FA00373C33 /* GoogleMaps.bundle */; };
 		6253AE6E218D324A00373C33 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6253AE6D218D324A00373C33 /* Accelerate.framework */; };
 		6253AE70218D325700373C33 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6253AE6F218D325700373C33 /* CoreData.framework */; };
@@ -36,7 +37,6 @@
 		6253AE86218D32D700373C33 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6253AE85218D32D700373C33 /* SystemConfiguration.framework */; };
 		6253AE88218D32E100373C33 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6253AE87218D32E100373C33 /* UIKit.framework */; };
 		62D6C187C45A8E5757685BAE /* Pods_GhananeedanambulanceUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C975CF7C112C480E285865C1 /* Pods_GhananeedanambulanceUITests.framework */; };
-		EC9444478DE8A5A2E0C3AC9A /* Pods_Ghananeedanambulance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 794AE3E3B6D7BD197936B934 /* Pods_Ghananeedanambulance.framework */; };
 		FBCD1B8F8BCF1BF05DF4FE78 /* Pods_GhananeedanambulanceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74EE7F72E1D1C4661162F83D /* Pods_GhananeedanambulanceTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +63,11 @@
 		26E0288DBE7061348F78A97E /* Pods-GhananeedanambulanceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GhananeedanambulanceTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GhananeedanambulanceTests/Pods-GhananeedanambulanceTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3C65F894748F11C044FD50E6 /* Pods-Ghananeedanambulance.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ghananeedanambulance.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ghananeedanambulance/Pods-Ghananeedanambulance.debug.xcconfig"; sourceTree = "<group>"; };
 		6089E013218D5E0700B68209 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6218F4EB218EB1910018635A /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6218F4EE218EB1910018635A /* FirebaseDatabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseDatabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6218F4F1218EB1910018635A /* GoogleUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GoogleUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6218F4F4218EB1910018635A /* leveldb.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = leveldb.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6218F4F7218EB1910018635A /* nanopb.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = nanopb.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6253AE31218D2A9C00373C33 /* Ghananeedanambulance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ghananeedanambulance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6253AE34218D2A9C00373C33 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6253AE36218D2A9C00373C33 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +113,7 @@
 			files = (
 				6253AE88218D32E100373C33 /* UIKit.framework in Frameworks */,
 				6253AE86218D32D700373C33 /* SystemConfiguration.framework in Frameworks */,
+				6218F4E5218EB1890018635A /* GoogleMapsCore.framework in Frameworks */,
 				6253AE84218D32CB00373C33 /* QuartzCore.framework in Frameworks */,
 				6253AE82218D32C100373C33 /* OpenGLES.framework in Frameworks */,
 				6253AE80218D32B600373C33 /* libc++.tbd in Frameworks */,
@@ -115,15 +121,14 @@
 				6253AE7C218D329600373C33 /* GLKit.framework in Frameworks */,
 				6253AE7A218D328C00373C33 /* CoreText.framework in Frameworks */,
 				6253AE78218D328100373C33 /* CoreTelephony.framework in Frameworks */,
+				6218F4FA218EB1910018635A /* Pods_Ghananeedanambulance.framework in Frameworks */,
 				6253AE76218D327600373C33 /* CoreLocation.framework in Frameworks */,
 				6253AE74218D326D00373C33 /* CoreImage.framework in Frameworks */,
 				6253AE72218D326200373C33 /* CoreGraphics.framework in Frameworks */,
 				6253AE70218D325700373C33 /* CoreData.framework in Frameworks */,
 				6253AE6E218D324A00373C33 /* Accelerate.framework in Frameworks */,
 				6253AE65218D316F00373C33 /* GoogleMaps.framework in Frameworks */,
-				6253AE67218D317F00373C33 /* GoogleMapsCore.framework in Frameworks */,
 				6253AE63218D314E00373C33 /* GoogleMapsBase.framework in Frameworks */,
-				EC9444478DE8A5A2E0C3AC9A /* Pods_Ghananeedanambulance.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +154,11 @@
 		6253AE28218D2A9C00373C33 = {
 			isa = PBXGroup;
 			children = (
+				6218F4F7218EB1910018635A /* nanopb.framework */,
+				6218F4F4218EB1910018635A /* leveldb.framework */,
+				6218F4F1218EB1910018635A /* GoogleUtilities.framework */,
+				6218F4EE218EB1910018635A /* FirebaseDatabase.framework */,
+				6218F4EB218EB1910018635A /* FirebaseCore.framework */,
 				6253AE33218D2A9C00373C33 /* Ghananeedanambulance */,
 				6253AE48218D2A9D00373C33 /* GhananeedanambulanceTests */,
 				6253AE53218D2A9D00373C33 /* GhananeedanambulanceUITests */,
