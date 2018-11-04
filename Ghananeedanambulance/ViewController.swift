@@ -456,58 +456,81 @@ class ViewController: UIViewController {
     }
     
     /*
-    func makerequest(path:String, user_lat: String, user_long: String, lat_dest: String, long_dest: String,name: String,index: Int) -> ([Int]){
-        var distance : [Int] = [0]
-        let scriptUrl = path
-        let urlWithParams = scriptUrl + "?units=imperial&origins=\(user_lat),\(user_long)&destinations=\(lat_dest),\(long_dest)&key=AIzaSyAOgwzUzZd78JcqcYThUsZV1wgISK-iSMY"
-        let url : NSString = urlWithParams as NSString
-        let urlStr : NSString = url.addingPercentEscapes(using: String.Encoding.utf8.rawValue)! as NSString
-        let searchURL : NSURL = NSURL(string: urlStr as String)!
-        print(searchURL)
-        let myUrl =  searchURL;
-        let request = NSMutableURLRequest(url:myUrl as URL);
-        // Set request HTTP method to GET. It could be POST as well
-        request.httpMethod = "GET"
-        // Excute HTTP Request
-        let task = URLSession.shared.dataTask(with: request as URLRequest) {
-            data, response, error in
-            // Check for error
-            if error != nil
-            {
-                print("error=\(String(describing: error))")
-                return
-            }
-            // Print out response string
-            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            print("responseString = \(String(describing: responseString))")
-            // Convert server json response to NSDictionary
-            do {
-                if let myJson = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
-                    // Print out dictionary
-                    print(myJson)
-                    
-                        if let rowjson = myJson["row"] as? [String:AnyObject]{
-                            if let elementjson = rowjson["element"] as? [String:AnyObject]{
-                                if let durationjson = elementjson["duration"] as? [String:AnyObject]{
-                                    distance[index] = (durationjson["value"] as? Int)!
-                                    print("The distance of \(name) is \(distance[index])")
-                                }
-                            }
-                        }
-                        else{
-                            print ("NO")
-                    }
-                }
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
-            
-        }
-        
-        task.resume()
-        return distance
+    func makerequest(path:String, user_lat: String, user_long: String, lat_dest: String, long_dest: String,name: String,index: Int) -> (Int,Bool){
+     print("using destination longitude \(long_dest) & latitude \(lat_dest) and original latitude \(user_lat) and longitude \(user_long) for hospital \(name)")
+     var value = 0
+     let scriptUrl = "https://maps.googleapis.com/maps/api/distancematrix/json"
+     let urlWithParams = scriptUrl + "?units=imperial&origins=\(user_lat),\(user_long)&destinations=\(lat_dest),\(long_dest)&key=AIzaSyAOgwzUzZd78JcqcYThUsZV1wgISK-iSMY"
+     let url : NSString = urlWithParams as NSString
+     let urlStr : NSString = url.addingPercentEscapes(using: String.Encoding.utf8.rawValue)! as NSString
+     let searchURL : NSURL = NSURL(string: urlStr as String)!
+     print(searchURL)
+     let myUrl =  searchURL;
+     let request = NSMutableURLRequest(url:myUrl as URL);
+     // Set request HTTP method to GET. It could be POST as well
+     request.httpMethod = "GET"
+     // Excute HTTP Request
+     DispatchQueue.main.async {
+     let task = URLSession.shared.dataTask(with: request as URLRequest) {data, response, error in
+     while data == nil {
+     print("test")
+     }
+     do {
+     // Check for error
+     if error != nil
+     {
+     print("error=\(String(describing: error))")
+     return
+     }
+     else{
+     if let content = data{
+     do{
+     //to pick up data from this the Json
+     if  let myJson = try JSONSerialization.jsonObject(with: content, options: .mutableContainers) as? NSDictionary{
+     print("Successfully sERIALIZED")
+     print(myJson)
+     // Access value of username, name, and email by its key
+     let newdata : NSDictionary = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+     let info : NSArray =  newdata.value(forKey: "rows") as! NSArray
+     //print((myJson[0] as! NSDictionary).object(forKey: "rows") as? String as Any)
+     print(info)
+     print("Info loaded")
+     print(info.count)
+     let word : String = self.json(from: info)!
+     print(word)
+     let result = word.components(separatedBy: "{")
+     print(result)
+     let result_2 = result[4]
+     print(result_2)
+     let result_3 = result_2.components(separatedBy: ":")
+     print(result_3)
+     let result_4 = result_3[1]
+     print(result_4)
+     let final = result_4.components(separatedBy: ",")
+     print(final)
+     print("The duration value on the json is \(final[0])")
+     value = Int(final[0])!
+     //print("The distance in the array now is \(distance[index])")
+     }
+     }
+     catch{
+     print(error)
+     }
+     }
+     
+     
+     
+     }
+     
+     }
+     }
+     
+     
+     task.resume()
+     }
+        return (value,true)
     }
-    */
+ */
     
 }
 
